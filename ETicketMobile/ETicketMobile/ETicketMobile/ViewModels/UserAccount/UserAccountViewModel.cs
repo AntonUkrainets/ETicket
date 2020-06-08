@@ -69,8 +69,16 @@ namespace ETicketMobile.ViewModels.UserAccount
             }
         }
 
+        public override void OnNavigatedFrom(INavigationParameters parameters)
+        {
+            base.OnNavigatedFrom(parameters);
+        }
+
         private async void OnNavigateToAction(UserAction action)
         {
+            if(!navigationParameters.ContainsKey("email"))
+                navigationParameters.Add("email", email);
+
             await NavigationService.NavigateAsync(action.View, navigationParameters);
         }
     }

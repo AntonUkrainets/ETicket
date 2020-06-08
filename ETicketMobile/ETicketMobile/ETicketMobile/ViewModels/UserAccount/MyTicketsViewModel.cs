@@ -24,6 +24,8 @@ namespace ETicketMobile.ViewModels.BoughtTickets
         private IEnumerable<Ticket> activatedTickets;
         private IEnumerable<Ticket> expiredTickets;
 
+        private string email;
+
         #endregion
 
         #region Properties
@@ -72,8 +74,10 @@ namespace ETicketMobile.ViewModels.BoughtTickets
 
         public async override void OnNavigatedTo(INavigationParameters navigationParameters)
         {
-            var email = navigationParameters.GetValue<string>("email")
-                 ?? throw new ArgumentNullException(nameof(navigationParameters));
+            if (string.IsNullOrEmpty(email))
+            {
+                email = navigationParameters.GetValue<string>("email");
+            }
 
             try
             {

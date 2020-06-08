@@ -1,8 +1,12 @@
-﻿namespace ETicketMobile.WebAccess.DTO
+﻿using System.Collections.Generic;
+
+namespace ETicketMobile.WebAccess.DTO
 {
     public class BuyTicketRequestDto
     {
         public int TicketTypeId { get; set; }
+
+        public IEnumerable<int> AreasId { get; set; }
 
         public string Email { get; set; }
 

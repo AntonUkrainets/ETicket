@@ -36,7 +36,7 @@
             AnimationEasing="SpringOut"
             Spacing="5">
 
-            <telerikPrimitives:AccordionItem>
+            <telerikPrimitives:AccordionItem IsExpanded="True">
                 <telerikPrimitives:AccordionItem.Header>
                     <telerikPrimitives:AccordionItemHeader>
                         <Label

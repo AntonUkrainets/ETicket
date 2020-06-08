@@ -39,6 +39,8 @@ namespace ETicketMobile.ViewModels.Tickets
 
         private ICommand chooseTicket;
 
+        private string email;
+
         #endregion
 
         #region Properties
@@ -144,6 +146,11 @@ namespace ETicketMobile.ViewModels.Tickets
         {
             this.navigationParameters = navigationParameters
                 ?? throw new ArgumentNullException(nameof(navigationParameters));
+
+            if (string.IsNullOrEmpty(email))
+            {
+                email = navigationParameters.GetValue<string>("email");
+            }
         }
 
         private async void UpdateAreaInfo()
@@ -201,6 +208,9 @@ namespace ETicketMobile.ViewModels.Tickets
             navigationParameters.Add("ticketName", TicketSelected.Name);
             navigationParameters.Add("areas", areasId);
             navigationParameters.Add("totalPrice", TotalPrice);
+
+            if (!navigationParameters.ContainsKey("email"))
+                navigationParameters.Add("email", email);
 
             await NavigationService.NavigateAsync(nameof(LiqPayView), navigationParameters);
         }

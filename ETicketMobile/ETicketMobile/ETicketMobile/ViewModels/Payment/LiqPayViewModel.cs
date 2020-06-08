@@ -130,7 +130,11 @@ namespace ETicketMobile.ViewModels.Payment
             Description = navigationParameters.GetValue<string>("ticketName");
             ticketTypeId = navigationParameters.GetValue<int>("ticketId");
             areasId = navigationParameters["areas"] as IEnumerable<int>;
-            email = navigationParameters.GetValue<string>("email");
+
+            if (string.IsNullOrEmpty(email))
+            {
+                email = navigationParameters.GetValue<string>("email");
+            }
 
             Amount = navigationParameters.GetValue<decimal>("totalPrice");
         }
@@ -172,6 +176,7 @@ namespace ETicketMobile.ViewModels.Payment
             return new BuyTicketRequestDto
             {
                 TicketTypeId = ticketTypeId,
+                AreasId = areasId,
                 Email = email,
                 Price = Amount,
                 Description = Description,
