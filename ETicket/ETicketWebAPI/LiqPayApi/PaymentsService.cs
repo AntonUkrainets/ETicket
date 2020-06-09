@@ -22,19 +22,22 @@ namespace ETicket.WebAPI.LiqPayApi
         private readonly IPriceListService priceListService;
         private readonly ITicketTypeService ticketTypeService;
         private readonly ITicketService ticketService;
+        private readonly IAreaService areaService;
         private readonly IUserService userService;
 
         #endregion
 
         public PaymentsService(
             ITransactionService transactionAppService,
-            IPriceListService priceListService,
             ITicketTypeService ticketTypeService,
+            IPriceListService priceListService,
             ITicketService ticketService,
+            IAreaService areaService,
             IUserService userService,
             IMerchant merchant
         )
         {
+            this.areaService = areaService;
             this.userService = userService;
             this.ticketService = ticketService;
             this.userService = userService;
@@ -66,35 +69,21 @@ namespace ETicket.WebAPI.LiqPayApi
             return totalPrice;
         }
 
-        public async Task<LiqPayResponse> MakePayment(
-            decimal amount,
-            string description,
-            string card,
-            string expirationMonth,
-            string expirationYear,
-            string cvv2,
-            int ticketTypeId,
-            string email
-        )
+        public async Task<LiqPayResponse> MakePayment(decimal amount, string description, string card, string expirationMonth, 
+            string expirationYear, string cvv2, int ticketTypeId, IEnumerable<int> areasId, string email)
         {
             var response = await RequestBuyTicket(amount, description, card, expirationMonth, expirationYear, cvv2);
 
             var transactionHistoryId = Guid.NewGuid();
 
             SaveTransaction(transactionHistoryId, response.PaymentId, response.Amount);
-            SaveTicket(email, ticketTypeId, transactionHistoryId);
+            SaveTicket(areasId, email, ticketTypeId, transactionHistoryId);
 
             return response;
         }
 
-        private async Task<LiqPayResponse> RequestBuyTicket(
-            decimal amount,
-            string description,
-            string card, 
-            string expirationMonth, 
-            string expirationYear, 
-            string cvv2
-        )
+        private async Task<LiqPayResponse> RequestBuyTicket(decimal amount, string description, string card, 
+            string expirationMonth, string expirationYear, string cvv2)
         {
             var payParameters = CreateLiqPayRequest(amount, description, card, expirationMonth, expirationYear, cvv2);
 
@@ -103,14 +92,8 @@ namespace ETicket.WebAPI.LiqPayApi
             return response;
         }
 
-        private CardLiqPayRequest CreateLiqPayRequest(
-            decimal amount,
-            string description,
-            string card,
-            string expirationMonth,
-            string expirationYear,
-            string cvv2
-        )
+        private CardLiqPayRequest CreateLiqPayRequest(decimal amount, string description, string card,
+            string expirationMonth, string expirationYear, string cvv2)
         {
             return new CardLiqPayRequest
             {
@@ -143,9 +126,13 @@ namespace ETicket.WebAPI.LiqPayApi
             transactionAppService.AddTransaction(transaction);
         }
 
-        private void SaveTicket(string email, int ticketTypeId, Guid transactionHistoryId)
+        private void SaveTicket(IEnumerable<int> areasId, string email, int ticketTypeId, Guid transactionHistoryId)
         {
             var userId = userService.GetByEmail(email).Id;
+
+            var areas = areaService.GetAreas()
+                .Where(a => areasId.Contains(a.Id))
+                .ToDictionary(x => x.Id, x => x.Name);
 
             var ticketDto = new TicketDto
             {
@@ -153,7 +140,8 @@ namespace ETicket.WebAPI.LiqPayApi
                 CreatedUTCDate = DateTime.Now.Date,
                 TransactionHistoryId = transactionHistoryId,
                 TicketTypeId = ticketTypeId,
-                UserId = userId
+                UserId = userId,
+                Areas = areas
             };
 
             ticketService.Create(ticketDto);

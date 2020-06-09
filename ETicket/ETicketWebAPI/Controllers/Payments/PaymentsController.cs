@@ -24,11 +24,12 @@ namespace ETicket.WebAPI.Controllers.Payments
             ITicketTypeService ticketTypeService,
             ITransactionService transactionAppService,
             ITicketService ticketService,
+            IAreaService areaService,
             IMerchant merchant
         )
         {
-            paymentsService = new PaymentsService(
-                transactionAppService, priceListService, ticketTypeService, ticketService, userService, merchant);
+            paymentsService = new PaymentsService(transactionAppService, ticketTypeService, priceListService, 
+                ticketService, areaService, userService, merchant);
         }
 
         [HttpPost]
@@ -48,15 +49,8 @@ namespace ETicket.WebAPI.Controllers.Payments
         [SwaggerResponse(200, "Returns if everything is right. Contains a BuyTicketResponse")]
         public async Task<IActionResult> Buy([FromBody, SwaggerRequestBody("Buy ticket payload", Required = true)] BuyTicketRequest request)
         {
-            var response = await paymentsService.MakePayment(
-                    request.Price,
-                    request.Description,
-                    request.CardNumber,
-                    request.ExpirationMonth,
-                    request.ExpirationYear,
-                    request.CVV2,
-                    request.TicketTypeId,
-                    request.Email);
+            var response = await paymentsService.MakePayment(request.Price, request.Description, request.CardNumber,
+                    request.ExpirationMonth, request.ExpirationYear, request.CVV2, request.TicketTypeId, request.AreasId, request.Email);
 
             var buyTicketResponse = new BuyTicketResponse
             {

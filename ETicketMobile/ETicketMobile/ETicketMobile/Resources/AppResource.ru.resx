@@ -418,7 +418,7 @@
     <comment>LoginView</comment>
   </data>
   <data name="SignUp" xml:space="preserve">
-    <value>Зарегистрироваться.</value>
+    <value>Зарегистрироваться</value>
     <comment>LoginView</comment>
   </data>
   <data name="Terms" xml:space="preserve">
@@ -452,5 +452,9 @@
   <data name="Ok" xml:space="preserve">
     <value>OK</value>
     <comment>DisplayAlertDialog</comment>
+  </data>
+  <data name="LoginDefault" xml:space="preserve">
+    <value>Войдите в свой аккаунт</value>
+    <comment>LoginView</comment>
   </data>
 </root>

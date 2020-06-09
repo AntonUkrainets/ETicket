@@ -345,6 +345,10 @@
     <value>Localizations</value>
     <comment>SettingsViewModel</comment>
   </data>
+  <data name="LoginDefault" xml:space="preserve">
+    <value>Log Into Your Account</value>
+    <comment>LoginView</comment>
+  </data>
   <data name="Logout" xml:space="preserve">
     <value>Log out</value>
     <comment>SettingsView</comment>

@@ -47,7 +47,7 @@
                     <Label
                         Grid.ColumnSpan="2"
                         Grid.Row="0"
-                        Text="Log Into Your Account"
+                        Text="{local:Translate Text=LoginDefault}"
                         Style="{x:StaticResource Key=TitleLabelStyle}"/>
 
                     <Label
@@ -100,8 +100,9 @@
                         Style="{x:StaticResource Key=NormalLabelStyle}"/>
 
                     <telerikInput:RadButton
-                        Grid.Column="1"
+                        Grid.ColumnSpan="2"
                         Grid.Row="6"
+                        HorizontalContentAlignment="End"
                         VerticalContentAlignment="End"
                         Command="{Binding NavigateToRegistrationView, Mode=OneTime}"
                         Text="{local:Translate Text=SignUp}"

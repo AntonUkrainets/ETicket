@@ -113,7 +113,18 @@ namespace ETicketMobile.Resources {
                 return ResourceManager.GetString("Area", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Log Into Your Account.
+        /// </summary>
+        internal static string LoginDefault
+        {
+            get
+            {
+                return ResourceManager.GetString("LoginDefault", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Buy.
         /// </summary>

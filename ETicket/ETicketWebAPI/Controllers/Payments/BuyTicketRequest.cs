@@ -1,8 +1,12 @@
-﻿namespace ETicket.WebAPI.Controllers.Payments
+﻿using System.Collections.Generic;
+
+namespace ETicket.WebAPI.Controllers.Payments
 {
     public class BuyTicketRequest
     {
         public int TicketTypeId { get; set; }
+
+        public IEnumerable<int> AreasId { get; set; }
 
         public string Email { get; set; }
 

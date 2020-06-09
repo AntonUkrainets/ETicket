@@ -453,4 +453,8 @@
     <value>OK</value>
     <comment>DisplayAlertDialog</comment>
   </data>
+  <data name="LoginDefault" xml:space="preserve">
+    <value>Увійдіть до свого облікового запису</value>
+    <comment>LoginView</comment>
+  </data>
 </root>
