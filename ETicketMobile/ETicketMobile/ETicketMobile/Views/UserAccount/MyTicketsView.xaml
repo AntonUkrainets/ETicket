@@ -4,11 +4,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:prism="http://prismlibrary.com" 
     xmlns:telerikPrimitives="clr-namespace:Telerik.XamarinForms.Primitives;assembly=Telerik.XamarinForms.Primitives" xmlns:tickets="clr-namespace:ETicketMobile.Business.Model.Tickets;assembly=ETicketMobile.Business"
+    xmlns:converters="clr-namespace:ETicketMobile.UserInterface.BindingConverters;assembly=ETicketMobile.UserInterface"
     prism:ViewModelLocator.AutowireViewModel="True"
     x:Class="ETicketMobile.Views.UserAccount.MyTicketsView">
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:UtcToLocalDateTimeConverter x:Key="UtcToLocalDateTimeConverter" />
+
             <Style TargetType="telerikPrimitives:AccordionItemHeader">
                 <Setter Property="IndicatorColor" Value="Blue"/>
                 <Setter Property="IndicatorFontSize" Value="16"/>
@@ -96,7 +99,7 @@
                                             <Label
                                                 Grid.Column="1"
                                                 Grid.Row="2"
-                                                Text="{Binding CreatedAt, StringFormat='{0:dd.MM.yyyy HH.mm}', Mode=OneWay}"
+                                                Text="{Binding CreatedAt, StringFormat='{0:dd.MM.yyyy HH.mm}', Mode=OneWay, Converter={x:StaticResource Key=UtcToLocalDateTimeConverter}}"
                                                 HorizontalTextAlignment="Start"
                                                 Style="{x:StaticResource Key=NormalLabelStyle}"/>
 
