@@ -45,23 +45,28 @@ namespace ETicketMobile.ViewModels.Settings
 
         public override void OnAppearing()
         {
-            Localizations = new List<LocalizationItemViewModel>
+            var localizations = new List<LocalizationItemViewModel>
             {
                 new LocalizationItemViewModel(new Localization { Language = "Українська", Culture = "uk-UA" }),
                 new LocalizationItemViewModel(new Localization { Language = "Русский", Culture = "ru-RU" }),
                 new LocalizationItemViewModel(new Localization { Language = "English", Culture = "en-US" }),
             };
 
-            var lang = Localizations.Where(c => new CultureInfo(c.Culture).Equals(localize.CurrentCulture)).FirstOrDefault();
-            SetLocalization(lang.Language);
+            var lang = localizations
+                .Where(c => new CultureInfo(c.Culture).Equals(localize.CurrentCulture))
+                .FirstOrDefault();
+
+            SetLocalization(lang.Language, localizations);
 
             var selectHandler = new Command<string>(
                 language =>
                     {
-                        SetLocalization(language);
+                        SetLocalization(language, localizations);
                     });
 
-            Localizations.ToList().ForEach(x => x.SelectCommand = selectHandler);
+            localizations.ToList().ForEach(x => x.SelectCommand = selectHandler);
+
+            Localizations = localizations;
         }
 
         private async void OnLanguageSelected(Localization localization)
@@ -76,9 +81,9 @@ namespace ETicketMobile.ViewModels.Settings
             await localApi.AddAsync(localizationEntity);
         }
 
-        private void SetLocalization(string language)
+        private void SetLocalization(string language, IEnumerable<LocalizationItemViewModel> localizations)
         {
-            foreach (var localization in Localizations)
+            foreach (var localization in localizations)
             {
                 if (localization.Language == language)
                 {

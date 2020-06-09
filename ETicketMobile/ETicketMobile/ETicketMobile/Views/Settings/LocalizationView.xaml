@@ -29,6 +29,7 @@
                                 <RadioButton
                                     Command="{Binding SelectCommand, Mode=OneTime}"
                                     CommandParameter="{Binding Language, Mode=OneWay}"
+                                    IsChecked="{Binding IsChoosed}"
                                     Grid.Column="0"
                                     GroupName="0"/>
 
